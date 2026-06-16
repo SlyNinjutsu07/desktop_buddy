@@ -2,14 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 public class Sprite{
     private JFrame window;
     private JPopupMenu menu;
     private JLabel label;
 
-    private NoteManager manager;
+    //private NoteManager manager;
 
     public Sprite(int width, int height){
         window = new JFrame();
@@ -55,7 +54,7 @@ public class Sprite{
 
         JMenuItem new_window = new JMenuItem("New Window");
         new_window.addActionListener(e -> {
-            System.out.println("Can't do that");
+            System.out.println("Can't do that");    
         });
 
         JMenuItem print_text = new JMenuItem("Print Input");

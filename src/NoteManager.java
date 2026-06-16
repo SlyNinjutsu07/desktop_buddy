@@ -4,8 +4,9 @@ import java.awt.*;
 public class NoteManager {
     private JFrame window;
 
-    //BUTTONS
-    private JButton addNoteButton;
+    //ADD BUTTON
+    private JButton addButton;
+    private JPopupMenu addButtonOptions;
 
     public NoteManager(){
         window = new JFrame("desktop buddy notes");
@@ -18,33 +19,54 @@ public class NoteManager {
 
         window.setLayout(null);
 
-
-        addButtons();
-        addListeners();
+        initializeComponents();
 
         //window.add(new JScrollPane(pane));
 
-        addNoteButton.setVisible(true);
+        addButton.setVisible(true);
 
         window.setVisible(true);
     }
 
-    private void addButtons(){
-        addNoteButton = new JButton();
+    private void initializeComponents(){
+        addInterface();
+        addListeners();
+    }
+
+    private void addInterface(){
+        addButton = new JButton();
 
         ImageIcon addIcon = new ImageIcon("add-icon.png");
         Image scaler = addIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledAddIcon = new ImageIcon(scaler);
-        addNoteButton.setIcon(scaledAddIcon);
-        addNoteButton.setBounds(10,10,30,30);
+        addButton.setIcon(scaledAddIcon);
+        addButton.setBounds(10,10,30,30);
 
 
-        window.add(addNoteButton);
+        window.add(addButton);
+        addButtonOptions = new JPopupMenu();
+        addButton.add(addButtonOptions);
     }
 
     private void addListeners(){
-        addNoteButton.addActionListener(e->{
-            System.out.println("Can't do anything right now!");
+
+        /* ADD BUTTON FUNCTIONALITY */
+        JMenuItem addFolder = new JMenuItem("Create Folder");
+        JMenuItem addNote = new JMenuItem("Create Note");
+
+        addButtonOptions.add(addFolder);
+        addButtonOptions.add(addNote);
+
+        addFolder.addActionListener(e->{
+            //ADD A FOLDER
         });
+        addNote.addActionListener(e->{
+            //ADD A NOTE
+        });
+
+        addButton.addActionListener(e->{
+            addButtonOptions.show(addButton, addButton.getWidth(), 0);
+        });
+        /* END */
     }
 }
