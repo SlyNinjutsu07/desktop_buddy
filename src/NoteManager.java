@@ -38,6 +38,9 @@ public class NoteManager {
 
     private void addInterface(){
         addButton = new JButton();
+        addButtonOptions = new JPopupMenu();
+        addButton.add(addButtonOptions);
+
         settingsButton = new JButton();
 
         //customization
@@ -46,17 +49,26 @@ public class NoteManager {
         ImageIcon scaledAddIcon = new ImageIcon(scaler);
         addButton.setIcon(scaledAddIcon);
         addButton.setBounds(10,10,30,30);
+        //addButton.setBorderPainted(false);
 
-
+        ImageIcon settingsIcon = new ImageIcon("settings-icon.png");
+        scaler = settingsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        ImageIcon scaledSettingsIcon = new ImageIcon(scaler);
+        settingsButton.setIcon(scaledSettingsIcon);
+        settingsButton.setBounds( 340, 10, 30, 30);
+        settingsButton.setOpaque(false);
+        settingsButton.setContentAreaFilled(false);
+        //settingsButton.setBorderPainted(false);
 
 
         //adding components
+        window.add(settingsButton);
         window.add(addButton);
-        addButtonOptions = new JPopupMenu();
-        addButton.add(addButtonOptions);
+        
 
         //visibility
         addButton.setVisible(true);
+        settingsButton.setVisible(true);
     }
 
     private void addListeners(){
@@ -79,5 +91,10 @@ public class NoteManager {
             addButtonOptions.show(addButton, addButton.getWidth(), 0);
         });
         /* END */
+
+        /* SETTINGS LISTENER */
+        settingsButton.addActionListener(e->{
+            Settings settings = new Settings();
+        });
     }
 }
