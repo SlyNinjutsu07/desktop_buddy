@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class NoteManager {
     private JFrame window;
@@ -7,6 +8,13 @@ public class NoteManager {
     //ADD BUTTON
     private JButton addButton;
     private JPopupMenu addButtonOptions;
+
+    //SETTINGS BUTTON
+    private JButton settingsButton;
+
+    //CONTENT
+    private List<Folder> folders;
+    private List<Note> notes;
 
     public NoteManager(){
         window = new JFrame("desktop buddy notes");
@@ -16,14 +24,9 @@ public class NoteManager {
 
         window.setSize(400, 400);
         window.setLocation(desktop_size.width / 2 - 600, desktop_size.height / 2 - 200);
-
         window.setLayout(null);
 
         initializeComponents();
-
-        //window.add(new JScrollPane(pane));
-
-        addButton.setVisible(true);
 
         window.setVisible(true);
     }
@@ -35,7 +38,9 @@ public class NoteManager {
 
     private void addInterface(){
         addButton = new JButton();
+        settingsButton = new JButton();
 
+        //customization
         ImageIcon addIcon = new ImageIcon("add-icon.png");
         Image scaler = addIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledAddIcon = new ImageIcon(scaler);
@@ -43,9 +48,15 @@ public class NoteManager {
         addButton.setBounds(10,10,30,30);
 
 
+
+
+        //adding components
         window.add(addButton);
         addButtonOptions = new JPopupMenu();
         addButton.add(addButtonOptions);
+
+        //visibility
+        addButton.setVisible(true);
     }
 
     private void addListeners(){
