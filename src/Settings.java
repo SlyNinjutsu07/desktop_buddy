@@ -2,7 +2,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Settings {
     private JFrame window;
@@ -16,7 +16,10 @@ public class Settings {
         window.setSize(300,300);
         
         //ADD INPUT COMPONENT FOR DIRECTORY
-
+        JTextField pathField = new JTextField("Path to dir...");
+        window.add(pathField);
+        
+        
         window.setVisible(true);
     }
 }

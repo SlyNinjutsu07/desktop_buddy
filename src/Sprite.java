@@ -50,6 +50,7 @@ public class Sprite{
         JMenuItem notes_window = new JMenuItem("Notes");
         notes_window.addActionListener(e -> {
             System.out.println("Feature still being implemented");
+            new NoteManager();
         });
 
         JMenuItem new_window = new JMenuItem("New Window");

@@ -94,7 +94,7 @@ public class NoteManager {
 
         /* SETTINGS LISTENER */
         settingsButton.addActionListener(e->{
-            Settings settings = new Settings();
+            new Settings();
         });
     }
 }
