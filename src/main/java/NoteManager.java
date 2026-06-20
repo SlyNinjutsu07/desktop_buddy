@@ -44,14 +44,14 @@ public class NoteManager {
         settingsButton = new JButton();
 
         //customization
-        ImageIcon addIcon = new ImageIcon("add-icon.png");
+        ImageIcon addIcon = new ImageIcon("src/main/resources/add-icon.png");
         Image scaler = addIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledAddIcon = new ImageIcon(scaler);
         addButton.setIcon(scaledAddIcon);
         addButton.setBounds(10,10,30,30);
         //addButton.setBorderPainted(false);
 
-        ImageIcon settingsIcon = new ImageIcon("settings-icon.png");
+        ImageIcon settingsIcon = new ImageIcon("src/main/resources/settings-icon.png");
         scaler = settingsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledSettingsIcon = new ImageIcon(scaler);
         settingsButton.setIcon(scaledSettingsIcon);

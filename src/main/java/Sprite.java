@@ -18,7 +18,7 @@ public class Sprite{
         //To get monitor's width and height
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 
-        ImageIcon icon = new ImageIcon("pixel_frog.png");
+        ImageIcon icon = new ImageIcon("src/main/resources/pixel_frog.png");
         Image scaledImg = icon.getImage().getScaledInstance(width, height, Image.SCALE_REPLICATE);
         label = new JLabel(new ImageIcon(scaledImg));
         window.add(label);

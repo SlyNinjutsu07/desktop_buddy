@@ -1,11 +1,14 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
+import com.formdev.flatlaf.FlatDarkLaf;
 
 public class Main {
     public static void main(String[] args) {
+        FlatDarkLaf.setup();
         //System.out.println(System.getProperty("user.dir"));
         //Sprite buddy = new Sprite(50, 50);
-        NoteManager nw = new NoteManager();
+        //NoteManager nw = new NoteManager();
+        new Settings();
     }
 }
