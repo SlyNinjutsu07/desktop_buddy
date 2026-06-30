@@ -17,15 +17,20 @@ public class SettingsWindow {
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 
-        //ADD INPUT COMPONENT FOR DIRECTORY
-        addPathField();
+        buildUI();
 
         window.pack();
         window.setLocation(new Point((int) size.getWidth() / 2 - window.getWidth() / 2, (int) size.getHeight() / 2 - window.getHeight() / 2));
         window.setVisible(true);
     }
 
-    private void addPathField(){
+
+    //main function for building all UI components into Settings window
+    private void buildUI(){
+        addDirPathSetting();
+    }
+
+    private void addDirPathSetting(){
         JPanel pathPanel = new JPanel();
         pathPanel.setLayout(new BorderLayout(8, 0));
         pathPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
