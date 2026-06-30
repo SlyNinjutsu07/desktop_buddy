@@ -46,5 +46,9 @@ for managing all the markdown files for note-taking.
 Plan: **Add a button for adding markdown files/notes
 and customize the NoteManager**
 
+#### 6.29.26
 
-
+Refactored the project to use packages. Files are now organized under `com.desktopbuddy`
+with `ui` and `data` subpackages. `Settings.java` was split into `SettingsData.java` (data)
+and `SettingsWindow.java` (UI). Added `maven-shade-plugin` to `pom.xml` so that
+`mvn package` {cli command btw} produces a single fat jar with all dependencies bundled, ready for distribution.

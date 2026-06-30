@@ -1,3 +1,9 @@
+package com.desktopbuddy.ui;
+
+import com.desktopbuddy.data.Folder;
+import com.desktopbuddy.data.Note;
+import com.desktopbuddy.data.SettingsData;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -49,7 +55,6 @@ public class NoteManager {
         ImageIcon scaledAddIcon = new ImageIcon(scaler);
         addButton.setIcon(scaledAddIcon);
         addButton.setBounds(10,10,30,30);
-        //addButton.setBorderPainted(false);
 
         ImageIcon settingsIcon = new ImageIcon("src/main/resources/settings-icon.png");
         scaler = settingsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -58,13 +63,10 @@ public class NoteManager {
         settingsButton.setBounds( 340, 10, 30, 30);
         settingsButton.setOpaque(false);
         settingsButton.setContentAreaFilled(false);
-        //settingsButton.setBorderPainted(false);
-
 
         //adding components
         window.add(settingsButton);
         window.add(addButton);
-        
 
         //visibility
         addButton.setVisible(true);
@@ -94,7 +96,7 @@ public class NoteManager {
 
         /* SETTINGS LISTENER */
         settingsButton.addActionListener(e->{
-            new Settings();
+            new SettingsWindow(new SettingsData());
         });
     }
 }

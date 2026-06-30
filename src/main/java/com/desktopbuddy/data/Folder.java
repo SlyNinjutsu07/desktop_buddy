@@ -1,3 +1,5 @@
+package com.desktopbuddy.data;
+
 import java.util.List;
 
 public class Folder {
