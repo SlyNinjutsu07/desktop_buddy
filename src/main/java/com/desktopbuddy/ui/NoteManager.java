@@ -13,10 +13,11 @@ public class NoteManager {
 
     //ADD BUTTON
     private JButton addButton;
-    private JPopupMenu addButtonOptions;
+    private JPopupMenu addButtonMenu;
 
     //SETTINGS BUTTON
     private JButton settingsButton;
+    private SettingsData settingsData;
 
     //CONTENT
     private List<Folder> folders;
@@ -30,7 +31,6 @@ public class NoteManager {
 
         window.setSize(400, 400);
         window.setLocation(desktop_size.width / 2 - 600, desktop_size.height / 2 - 200);
-        window.setLayout(null);
 
         initializeComponents();
 
@@ -38,65 +38,52 @@ public class NoteManager {
     }
 
     private void initializeComponents(){
-        addInterface();
-        addListeners();
+        JPanel toolbar = new JPanel(new BorderLayout());
+        toolbar.add(initAddButton(), BorderLayout.WEST);
+        toolbar.add(initSettingsButton(), BorderLayout.EAST);
+
+        window.add(toolbar, BorderLayout.NORTH);
     }
 
-    private void addInterface(){
+    private JButton initAddButton(){
         addButton = new JButton();
-        addButtonOptions = new JPopupMenu();
-        addButton.add(addButtonOptions);
+        addButtonMenu = new JPopupMenu();
 
-        settingsButton = new JButton();
-
-        //customization
         ImageIcon addIcon = new ImageIcon("src/main/resources/add-icon.png");
         Image scaler = addIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon scaledAddIcon = new ImageIcon(scaler);
-        addButton.setIcon(scaledAddIcon);
-        addButton.setBounds(10,10,30,30);
+        addButton.setIcon(new ImageIcon(scaler));
 
-        ImageIcon settingsIcon = new ImageIcon("src/main/resources/settings-icon.png");
-        scaler = settingsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        ImageIcon scaledSettingsIcon = new ImageIcon(scaler);
-        settingsButton.setIcon(scaledSettingsIcon);
-        settingsButton.setBounds( 340, 10, 30, 30);
-        settingsButton.setOpaque(false);
-        settingsButton.setContentAreaFilled(false);
-
-        //adding components
-        window.add(settingsButton);
-        window.add(addButton);
-
-        //visibility
-        addButton.setVisible(true);
-        settingsButton.setVisible(true);
-    }
-
-    private void addListeners(){
-
-        /* ADD BUTTON FUNCTIONALITY */
         JMenuItem addFolder = new JMenuItem("Create Folder");
         JMenuItem addNote = new JMenuItem("Create Note");
 
-        addButtonOptions.add(addFolder);
-        addButtonOptions.add(addNote);
+        addButtonMenu.add(addFolder);
+        addButtonMenu.add(addNote);
 
-        addFolder.addActionListener(e->{
+        addFolder.addActionListener(e -> {
             //ADD A FOLDER
         });
-        addNote.addActionListener(e->{
+        addNote.addActionListener(e -> {
             //ADD A NOTE
         });
 
-        addButton.addActionListener(e->{
-            addButtonOptions.show(addButton, addButton.getWidth(), 0);
+        addButton.addActionListener(e -> {
+            addButtonMenu.show(addButton, addButton.getWidth(), 0);
         });
-        /* END */
 
-        /* SETTINGS LISTENER */
-        settingsButton.addActionListener(e->{
-            new SettingsWindow(new SettingsData());
+        return addButton;
+    }
+
+    private JButton initSettingsButton(){
+        settingsButton = new JButton();
+
+        ImageIcon settingsIcon = new ImageIcon("src/main/resources/settings-icon.png");
+        Image scaler = settingsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        settingsButton.setIcon(new ImageIcon(scaler));
+
+        settingsButton.addActionListener(e -> {
+            new SettingsWindow(settingsData);
         });
+
+        return settingsButton;
     }
 }

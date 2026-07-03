@@ -28,6 +28,8 @@ public class SettingsWindow {
     //main function for building all UI components into Settings window
     private void buildUI(){
         addDirPathSetting();
+
+        window.add(Box.createVerticalGlue());
     }
 
     private void addDirPathSetting(){
@@ -48,7 +50,6 @@ public class SettingsWindow {
         pathPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pathPanel.getPreferredSize().height));
 
         window.add(pathPanel);
-        window.add(Box.createVerticalGlue());
     }
 
     private void updateDirectoryPath(JTextField inputField){
@@ -56,7 +57,6 @@ public class SettingsWindow {
         Path dir = Path.of(loc);
         if(Files.isDirectory(dir)){
             settings.setDirectoryPath(loc);
-            settings.setPathValid(true);
         } else{
             //Flashing error
             inputField.setEditable(false);
@@ -67,7 +67,6 @@ public class SettingsWindow {
             });
             timer.setRepeats(false);
             timer.start();
-            settings.setPathValid(false);
         }
     }
 }

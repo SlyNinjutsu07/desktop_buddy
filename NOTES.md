@@ -52,3 +52,9 @@ Refactored the project to use packages. Files are now organized under `com.deskt
 with `ui` and `data` subpackages. `Settings.java` was split into `SettingsData.java` (data)
 and `SettingsWindow.java` (UI). Added `maven-shade-plugin` to `pom.xml` so that
 `mvn package` {cli command btw} produces a single fat jar with all dependencies bundled, ready for distribution.
+
+#### 7.2.26
+
+Recently just downloaded Claude Code, I've been using it recently
+Going to stop hand coding and focus on designing the software and then
+translate it into a prompt for Claude to work on.
