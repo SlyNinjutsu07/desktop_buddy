@@ -1,8 +1,6 @@
 package com.desktopbuddy.ui;
 
-import com.desktopbuddy.data.Folder;
-import com.desktopbuddy.data.Note;
-import com.desktopbuddy.data.SettingsData;
+import com.desktopbuddy.data.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +21,9 @@ public class NoteManager {
     private List<Folder> folders;
     private List<Note> notes;
 
-    public NoteManager(){
+    public NoteManager(SettingsData settingsData){
+        this.settingsData = settingsData;
+
         window = new JFrame("desktop buddy notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

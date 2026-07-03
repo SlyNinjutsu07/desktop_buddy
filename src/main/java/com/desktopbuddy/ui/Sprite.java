@@ -1,5 +1,7 @@
 package com.desktopbuddy.ui;
 
+import com.desktopbuddy.data.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -48,7 +50,7 @@ public class Sprite {
         JMenuItem notes_window = new JMenuItem("Notes");
         notes_window.addActionListener(e -> {
             System.out.println("Feature still being implemented");
-            new NoteManager();
+            new NoteManager(new SettingsData());
         });
 
         JMenuItem new_window = new JMenuItem("New Window");

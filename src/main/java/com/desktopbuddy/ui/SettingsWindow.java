@@ -1,8 +1,10 @@
 package com.desktopbuddy.ui;
-import com.desktopbuddy.data.SettingsData;
+
+import com.desktopbuddy.data.*;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.nio.file.*;
 
 public class SettingsWindow {
@@ -12,7 +14,7 @@ public class SettingsWindow {
     public SettingsWindow(SettingsData settings) {
         this.settings = settings;
 
-        window = new JFrame("settings");
+        window = new JFrame("⚙️ settings");
         Container content = window.getContentPane();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -41,11 +43,27 @@ public class SettingsWindow {
 
         JTextField pathField = new JTextField(15);
         pathField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        pathField.setEditable(false);
 
-        pathField.addActionListener(e -> updateDirectoryPath(pathField));
+        JButton browseButton = new JButton("Browse...");
+        browseButton.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+
+            int result = chooser.showOpenDialog(window);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String selectedPath = chooser.getSelectedFile().getAbsolutePath();
+                pathField.setText(selectedPath);
+                settings.setDirectoryPath(selectedPath);
+            }
+        });
+
+        //pathField.addActionListener(e -> updateDirectoryPath(pathField));
 
         pathPanel.add(pathLabel, BorderLayout.WEST);
-        pathPanel.add(pathField, BorderLayout.CENTER);
+        pathPanel.add(browseButton, BorderLayout.CENTER);
+        pathPanel.add(pathField, BorderLayout.EAST);
 
         pathPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pathPanel.getPreferredSize().height));
 
