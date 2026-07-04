@@ -24,7 +24,6 @@ public class NoteManager {
     public NoteManager(){
         this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
 
-
         window = new JFrame("desktop buddy notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -61,10 +60,10 @@ public class NoteManager {
         addButtonMenu.add(addNote);
 
         addFolder.addActionListener(e -> {
-            //ADD A FOLDER
+            //TODO: Add functionality for adding a folder
         });
         addNote.addActionListener(e -> {
-            //ADD A NOTE
+            //TODO: Add functionality for adding a note
         });
 
         addButton.addActionListener(e -> {
