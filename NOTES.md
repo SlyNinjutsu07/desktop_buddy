@@ -58,3 +58,15 @@ and `SettingsWindow.java` (UI). Added `maven-shade-plugin` to `pom.xml` so that
 Recently just downloaded Claude Code, I've been using it recently
 Going to stop hand coding and focus on designing the software and then
 translate it into a prompt for Claude to work on.
+
+#### 7.4.26
+
+Working on a new class called ConfigManager.java that handles
+with storing the SettingsData object into a json file in a hidden
+.desktop_buddy directory. Learned a few basics regarding exception handling
+(IOException) with the load and save functions.
+
+`methods should be self-sufficient` -> preconditions should be confirmed always.
+im writing this because save() has an extra line that checks if the directory
+still exists, however, that won't always be the case because the directory could
+get deleted mid-program.

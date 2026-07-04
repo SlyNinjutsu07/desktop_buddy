@@ -12,13 +12,30 @@ public class ConfigManager {
     private static final Path CONFIG_FILE = CONFIG_DIR.resolve("config.json");
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static SettingsData load() {
-        // TODO: if CONFIG_FILE doesn't exist, create the directory + file with a default SettingsData and return it
-        // TODO: if CONFIG_FILE exists, read it and return the deserialized SettingsData
-        return new SettingsData();
+    public static SettingsData load() throws IOException {
+        try{
+            //if file location doesnt exist, make a new json
+            if(!Files.exists(CONFIG_FILE)){
+                SettingsData data = new SettingsData();
+                save(data);
+                return data;
+            }
+
+            //alternatively, just read it
+            return mapper.readValue(CONFIG_FILE.toFile(), SettingsData.class);
+        } catch (IOException e){ //in case something breaks
+            e.printStackTrace();
+            return new SettingsData();//return defaults for the program to keep running
+        }
+
     }
 
     public static void save(SettingsData data) {
-        // TODO: write data to CONFIG_FILE as JSON
+        try{
+            Files.createDirectories(CONFIG_DIR); //double-checks existence of directory
+            mapper.writeValue(CONFIG_FILE.toFile(), data);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
