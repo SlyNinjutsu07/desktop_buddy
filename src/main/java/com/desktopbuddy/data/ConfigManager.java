@@ -12,9 +12,9 @@ public class ConfigManager {
     private static final Path CONFIG_FILE = CONFIG_DIR.resolve("config.json");
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static SettingsData load() throws IOException {
+    public static SettingsData load(){
         try{
-            //if file location doesnt exist, make a new json
+            //if file location doesn't exist, make a new json
             if(!Files.exists(CONFIG_FILE)){
                 SettingsData data = new SettingsData();
                 save(data);

@@ -21,8 +21,9 @@ public class NoteManager {
     private List<Folder> folders;
     private List<Note> notes;
 
-    public NoteManager(SettingsData settingsData){
-        this.settingsData = settingsData;
+    public NoteManager(){
+        this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
+
 
         window = new JFrame("desktop buddy notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         FlatDarkLaf.setup();
         //Sprite buddy = new Sprite(50, 50);
-        NoteManager nw = new NoteManager(new SettingsData());
+        NoteManager nw = new NoteManager();
         //new SettingsWindow(new SettingsData());
     }
 }

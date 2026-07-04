@@ -4,15 +4,14 @@ import com.desktopbuddy.data.*;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.nio.file.*;
 
 public class SettingsWindow {
     private JFrame window;
-    private SettingsData settings;
+    private SettingsData settingsData;
 
-    public SettingsWindow(SettingsData settings) {
-        this.settings = settings;
+    public SettingsWindow(SettingsData data) {
+        this.settingsData = data;
 
         window = new JFrame("⚙️ settings");
         Container content = window.getContentPane();
@@ -52,14 +51,14 @@ public class SettingsWindow {
             chooser.setAcceptAllFileFilterUsed(false);
 
             int result = chooser.showOpenDialog(window);
+            //if selected save it to file
             if (result == JFileChooser.APPROVE_OPTION) {
                 String selectedPath = chooser.getSelectedFile().getAbsolutePath();
                 pathField.setText(selectedPath);
-                settings.setDirectoryPath(selectedPath);
+                settingsData.setDirectoryPath(selectedPath);
+                ConfigManager.save(settingsData);
             }
         });
-
-        //pathField.addActionListener(e -> updateDirectoryPath(pathField));
 
         pathPanel.add(pathLabel, BorderLayout.WEST);
         pathPanel.add(browseButton, BorderLayout.CENTER);
@@ -68,23 +67,5 @@ public class SettingsWindow {
         pathPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, pathPanel.getPreferredSize().height));
 
         window.add(pathPanel);
-    }
-
-    private void updateDirectoryPath(JTextField inputField){
-        String loc = inputField.getText().trim(); //.trim() removes whitespace
-        Path dir = Path.of(loc);
-        if(Files.isDirectory(dir)){
-            settings.setDirectoryPath(loc);
-        } else{
-            //Flashing error
-            inputField.setEditable(false);
-            inputField.setText("Invalid directory...");
-            Timer timer = new Timer(1500, e -> {
-                inputField.setText(loc);
-                inputField.setEditable(true);
-            });
-            timer.setRepeats(false);
-            timer.start();
-        }
     }
 }
