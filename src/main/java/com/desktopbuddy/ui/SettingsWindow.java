@@ -4,7 +4,6 @@ import com.desktopbuddy.data.*;
 
 import java.awt.*;
 import javax.swing.*;
-import java.nio.file.*;
 
 public class SettingsWindow {
     private JFrame window;
@@ -43,6 +42,7 @@ public class SettingsWindow {
         JTextField pathField = new JTextField(15);
         pathField.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         pathField.setEditable(false);
+        pathField.setText(settingsData.getDirectoryPath());
 
         JButton browseButton = new JButton("Browse...");
         browseButton.addActionListener(e -> {
