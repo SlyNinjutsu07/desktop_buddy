@@ -4,7 +4,9 @@ import com.desktopbuddy.data.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
+import java.nio.file.*;
 
 public class NoteManager {
     private JFrame window;
@@ -18,11 +20,15 @@ public class NoteManager {
     private SettingsData settingsData;
 
     //CONTENT
+    //TODO: add field for the current path that is being viewed
     private List<Folder> folders;
     private List<Note> notes;
 
     public NoteManager(){
         this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
+        Path dirPath = Path.of(settingsData.getDirectoryPath());
+        Folder root = new Folder("root", dirPath);
+        listItems(root);
 
         window = new JFrame("desktop buddy notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -34,6 +40,7 @@ public class NoteManager {
 
         initializeComponents();
 
+
         window.setVisible(true);
     }
 
@@ -43,6 +50,24 @@ public class NoteManager {
         toolbar.add(initSettingsButton(), BorderLayout.EAST);
 
         window.add(toolbar, BorderLayout.NORTH);
+    }
+
+    private void listItems(Folder root){
+        //TODO: list all items in the respective root
+        try (var stream = Files.list(root.getFolderPath())){
+            stream.forEach(itemPath -> {
+                String itemName = itemPath.getFileName().toString();
+                if(Files.isDirectory(itemPath)){
+                    if(itemName.equals(".obsidian")) return;
+                    System.out.println("[FOLDER] " + itemName);
+                } else if (itemName.endsWith(".md")) {
+                    System.out.println("[NOTE] " + itemName);
+                }
+            });
+        } catch (IOException e){
+            e.printStackTrace();
+            System.out.println("Could not read directory");
+        }
     }
 
     private JButton initAddButton(){
