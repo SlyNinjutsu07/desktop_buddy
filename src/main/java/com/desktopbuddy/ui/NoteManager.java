@@ -5,6 +5,7 @@ import com.desktopbuddy.data.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.*;
 
@@ -21,8 +22,8 @@ public class NoteManager {
 
     //CONTENT
     //TODO: add field for the current path that is being viewed
-    private List<Folder> folders;
-    private List<Note> notes;
+    private ArrayList<Folder> folders = new ArrayList<>();
+    private ArrayList<Note> notes = new ArrayList<>();
 
     public NoteManager(){
         this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
@@ -30,7 +31,9 @@ public class NoteManager {
         Folder root = new Folder("root", dirPath);
         listItems(root);
 
-        window = new JFrame("desktop buddy notes");
+        System.out.println(folders.size() + " " + notes.size());
+
+        window = new JFrame("📝notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension desktop_size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -53,15 +56,19 @@ public class NoteManager {
     }
 
     private void listItems(Folder root){
-        //TODO: list all items in the respective root
+        //clear current view
+        folders.clear();
+        notes.clear();
+
+        //read from the path and figure out the folders and notes and add them
         try (var stream = Files.list(root.getFolderPath())){
             stream.forEach(itemPath -> {
                 String itemName = itemPath.getFileName().toString();
                 if(Files.isDirectory(itemPath)){
                     if(itemName.equals(".obsidian")) return;
-                    System.out.println("[FOLDER] " + itemName);
+                    folders.add(new Folder(itemName, itemPath));
                 } else if (itemName.endsWith(".md")) {
-                    System.out.println("[NOTE] " + itemName);
+                    notes.add(new Note(itemName, itemPath));
                 }
             });
         } catch (IOException e){
@@ -111,4 +118,6 @@ public class NoteManager {
 
         return settingsButton;
     }
+
+    //TODO: add an init function for showing the current directory path (JPanel)
 }
