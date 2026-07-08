@@ -3,13 +3,11 @@ package com.desktopbuddy.ui;
 import com.desktopbuddy.data.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.nio.file.*;
 
 public class NoteManager {
@@ -24,6 +22,7 @@ public class NoteManager {
     private SettingsData settingsData;
 
     //CONTENT
+    private JPanel contentPanel;
     //TODO: add field for the current path that is being viewed
     private ArrayList<Folder> folders = new ArrayList<>();
     private ArrayList<Note> notes = new ArrayList<>();
@@ -32,7 +31,7 @@ public class NoteManager {
         this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
         Path dirPath = Path.of(settingsData.getDirectoryPath());
         Folder root = new Folder("root", dirPath);
-        listItems(root);
+        fillItems(root);
 
         //System.out.println(folders.size() + " " + notes.size());
 
@@ -54,11 +53,26 @@ public class NoteManager {
         toolbar.add(initAddButton(), BorderLayout.WEST);
         toolbar.add(initSettingsButton(), BorderLayout.EAST);
 
+        contentPanel = initUI();
+
+        //add content to manager window
         window.add(toolbar, BorderLayout.NORTH);
-        window.add(initUI(), BorderLayout.CENTER);
+        window.add(contentPanel, BorderLayout.CENTER);
     }
 
-    private void listItems(Folder root){
+    //refresh the contentPanel with new content after accessing root
+    private void refreshWindow(Folder newRoot){
+        fillItems(newRoot);
+        contentPanel.removeAll();
+        contentPanel = initUI();
+
+        //For re-orienting and re-drawing everything live
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+    //Fills the array lists with the current view (root) of contents
+    private void fillItems(Folder root){
         //clear current view
         folders.clear();
         notes.clear();
@@ -99,7 +113,10 @@ public class NoteManager {
             folderButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    //TODO: refresh NoteManager with new contents of that folder
+                    if(e.getClickCount() == 2){
+                        //TODO: refresh NoteManager with new contents of that folder
+                        refreshWindow(folder);
+                    }
                 }
             });
             folderView.add(folderButton);
@@ -117,7 +134,10 @@ public class NoteManager {
             noteButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    //TODO: instantaite a new NoteWindow
+                    if (e.getClickCount() == 2){
+                        //TODO: instantiate a new NoteWindow
+                        new NoteEditor(note);
+                    }
                 }
             });
             notesView.add(noteButton);
