@@ -3,7 +3,10 @@ package com.desktopbuddy.ui;
 import com.desktopbuddy.data.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ public class NoteManager {
         Folder root = new Folder("root", dirPath);
         listItems(root);
 
-        System.out.println(folders.size() + " " + notes.size());
+        //System.out.println(folders.size() + " " + notes.size());
 
         window = new JFrame("📝notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,7 +46,6 @@ public class NoteManager {
 
         initializeComponents();
 
-
         window.setVisible(true);
     }
 
@@ -53,6 +55,7 @@ public class NoteManager {
         toolbar.add(initSettingsButton(), BorderLayout.EAST);
 
         window.add(toolbar, BorderLayout.NORTH);
+        window.add(initUI(), BorderLayout.CENTER);
     }
 
     private void listItems(Folder root){
@@ -75,6 +78,53 @@ public class NoteManager {
             e.printStackTrace();
             System.out.println("Could not read directory");
         }
+    }
+
+    private JPanel initUI(){
+        JPanel view = new JPanel();
+        view.setLayout(new BorderLayout());
+
+        view.add(initFolders(), BorderLayout.NORTH);
+        view.add(initNotes(), BorderLayout.CENTER);
+
+        return view;
+    }
+
+    private JPanel initFolders(){
+        JPanel folderView = new JPanel();
+        folderView.setLayout(new BoxLayout(folderView, BoxLayout.Y_AXIS));
+
+        for(Folder folder : folders){
+            JButton folderButton = new JButton(folder.getFolderName());
+            folderButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    //TODO: refresh NoteManager with new contents of that folder
+                }
+            });
+            folderView.add(folderButton);
+        }
+
+        return folderView;
+    }
+
+    private JPanel initNotes(){
+        JPanel notesView = new JPanel();
+        notesView.setLayout(new FlowLayout());
+
+        for (Note note : notes){
+            JButton noteButton = new JButton(note.getNoteName());
+            noteButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    //TODO: instantaite a new NoteWindow
+                }
+            });
+            notesView.add(noteButton);
+        }
+
+
+        return notesView;
     }
 
     private JButton initAddButton(){
