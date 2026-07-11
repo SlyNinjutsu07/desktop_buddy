@@ -9,7 +9,6 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.nio.file.*;
 
 public class NoteManager {
@@ -20,11 +19,10 @@ public class NoteManager {
     private JButton addButton;
     private JPopupMenu addButtonMenu;
 
-    //SETTINGS BUTTON
-    private JButton settingsButton;
+    //SETTINGS
     private SettingsData settingsData;
 
-    //JTREE
+    //TREE
     private JTree tree;
 
     public NoteManager(){
@@ -125,7 +123,7 @@ public class NoteManager {
     }
 
     private JButton initSettingsButton(){
-        settingsButton = new JButton();
+        JButton settingsButton = new JButton();
 
         ImageIcon settingsIcon = new ImageIcon("src/main/resources/settings-icon.png");
         Image scaler = settingsIcon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
