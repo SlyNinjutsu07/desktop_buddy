@@ -53,7 +53,10 @@ public class NoteManager {
         toolbar.add(initAddButton(), BorderLayout.WEST);
         toolbar.add(initSettingsButton(), BorderLayout.EAST);
 
-        contentPanel = initUI();
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new BorderLayout());
+        contentPanel.add(initFolders());
+        contentPanel.add(initNotes());
 
         //add content to manager window
         window.add(toolbar, BorderLayout.NORTH);
@@ -64,7 +67,8 @@ public class NoteManager {
     private void refreshWindow(Folder newRoot){
         fillItems(newRoot);
         contentPanel.removeAll();
-        contentPanel = initUI();
+        contentPanel.add(initFolders(), BorderLayout.NORTH);
+        contentPanel.add(initNotes(), BorderLayout.CENTER);
 
         //For re-orienting and re-drawing everything live
         contentPanel.revalidate();
@@ -94,22 +98,17 @@ public class NoteManager {
         }
     }
 
-    private JPanel initUI(){
-        JPanel view = new JPanel();
-        view.setLayout(new BorderLayout());
-
-        view.add(initFolders(), BorderLayout.NORTH);
-        view.add(initNotes(), BorderLayout.CENTER);
-
-        return view;
-    }
-
     private JPanel initFolders(){
         JPanel folderView = new JPanel();
         folderView.setLayout(new BoxLayout(folderView, BoxLayout.Y_AXIS));
 
         for(Folder folder : folders){
             JButton folderButton = new JButton(folder.getFolderName());
+
+            ImageIcon imageIcon = new ImageIcon("src/main/resources/folder-logo.png");
+            Image scaler = imageIcon.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
+            folderButton.setIcon(new ImageIcon(scaler));
+
             folderButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -131,6 +130,11 @@ public class NoteManager {
 
         for (Note note : notes){
             JButton noteButton = new JButton(note.getNoteName());
+
+            ImageIcon imageIcon = new ImageIcon("src/main/resources/md-logo.png");
+            Image scaler = imageIcon.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
+            noteButton.setIcon(new ImageIcon(scaler));
+
             noteButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
