@@ -18,4 +18,6 @@ public class Note {
 
     public Path getFilePath() { return filePath; }
     public void setFilePath(Path filePath) { this.filePath = filePath; }
+
+    public String toString() {return getNoteName(); }
 }

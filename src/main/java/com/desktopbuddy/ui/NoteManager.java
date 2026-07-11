@@ -1,8 +1,11 @@
 package com.desktopbuddy.ui;
 
 import com.desktopbuddy.data.*;
+import com.sun.source.tree.Tree;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -60,8 +63,20 @@ public class NoteManager {
 
         //add content to manager window
         window.add(toolbar, BorderLayout.NORTH);
-        window.add(contentPanel, BorderLayout.CENTER);
+
+        Folder dir = new Folder("vault", Path.of(settingsData.getDirectoryPath()));
+        window.add(new JTree(TreeManager.buildTree(dir)), BorderLayout.CENTER);
+        //window.add(contentPanel, BorderLayout.CENTER);
     }
+
+
+    /*
+
+        EVERYTHING BELOW IS DEAD CODE BECAUSE I'M USING A JTREE INSTEAD
+
+     */
+
+
 
     //refresh the contentPanel with new content after accessing root
     private void refreshWindow(Folder newRoot){
@@ -77,6 +92,7 @@ public class NoteManager {
 
     //Fills the array lists with the current view (root) of contents
     private void fillItems(Folder root){
+
         //clear current view
         folders.clear();
         notes.clear();
@@ -113,7 +129,6 @@ public class NoteManager {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if(e.getClickCount() == 2){
-                        //TODO: refresh NoteManager with new contents of that folder
                         refreshWindow(folder);
                     }
                 }
@@ -139,7 +154,6 @@ public class NoteManager {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 2){
-                        //TODO: instantiate a new NoteWindow
                         new NoteEditor(note);
                     }
                 }
@@ -150,6 +164,10 @@ public class NoteManager {
 
         return notesView;
     }
+
+    /*
+    DEAD CODE ENDS HERE
+     */
 
     private JButton initAddButton(){
         addButton = new JButton();

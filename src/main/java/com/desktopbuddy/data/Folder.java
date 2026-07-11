@@ -34,4 +34,6 @@ public class Folder {
 
     public void addFolder(Folder folder) { this.folders.add(folder); }
     public void addNote(Note note) { this.notes.add(note); }
+
+    public String toString() {return getFolderName(); }
 }
