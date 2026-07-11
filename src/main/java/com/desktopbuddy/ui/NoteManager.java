@@ -6,6 +6,7 @@ import com.sun.source.tree.Tree;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,6 +16,7 @@ import java.nio.file.*;
 
 public class NoteManager {
     private JFrame window;
+    private Folder rootDir;
 
     //ADD BUTTON
     private JButton addButton;
@@ -30,13 +32,16 @@ public class NoteManager {
     private ArrayList<Folder> folders = new ArrayList<>();
     private ArrayList<Note> notes = new ArrayList<>();
 
+    //JTREE
+    private JTree tree;
+
     public NoteManager(){
         this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
         Path dirPath = Path.of(settingsData.getDirectoryPath());
-        Folder root = new Folder("root", dirPath);
-        fillItems(root);
+        rootDir = new Folder(dirPath.getFileName().toString(), dirPath);
 
-        //System.out.println(folders.size() + " " + notes.size());
+        tree = new JTree(TreeManager.buildTree(rootDir));
+
 
         window = new JFrame("📝notes");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,6 +61,9 @@ public class NoteManager {
         toolbar.add(initAddButton(), BorderLayout.WEST);
         toolbar.add(initSettingsButton(), BorderLayout.EAST);
 
+        //tree renderer
+        initializeTreeRenderer();
+
         contentPanel = new JPanel();
         contentPanel.setLayout(new BorderLayout());
         contentPanel.add(initFolders());
@@ -64,9 +72,26 @@ public class NoteManager {
         //add content to manager window
         window.add(toolbar, BorderLayout.NORTH);
 
-        Folder dir = new Folder("vault", Path.of(settingsData.getDirectoryPath()));
-        window.add(new JTree(TreeManager.buildTree(dir)), BorderLayout.CENTER);
+        Folder dir = new Folder(rootDir.getFolderName(), rootDir.getFolderPath());
+        window.add(new JScrollPane(tree), BorderLayout.CENTER);
         //window.add(contentPanel, BorderLayout.CENTER);
+    }
+
+    private void initializeTreeRenderer(){
+        DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+
+        //get icons
+        ImageIcon folderIcon = new ImageIcon("src/main/resources/folder-logo.png");
+        Image scaledFolderIcon = folderIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
+
+        ImageIcon noteIcon = new ImageIcon("src/main/resources/md-logo.png");
+        Image scaledNoteIcon = noteIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
+
+
+        renderer.setLeafIcon(new ImageIcon(scaledNoteIcon));
+        renderer.setOpenIcon(new ImageIcon(scaledFolderIcon));
+        renderer.setClosedIcon(new ImageIcon(scaledFolderIcon));
+        tree.setCellRenderer(renderer);
     }
 
 
@@ -118,12 +143,13 @@ public class NoteManager {
         JPanel folderView = new JPanel();
         folderView.setLayout(new BoxLayout(folderView, BoxLayout.Y_AXIS));
 
+
+
         for(Folder folder : folders){
             JButton folderButton = new JButton(folder.getFolderName());
 
-            ImageIcon imageIcon = new ImageIcon("src/main/resources/folder-logo.png");
-            Image scaler = imageIcon.getImage().getScaledInstance(30,30,Image.SCALE_SMOOTH);
-            folderButton.setIcon(new ImageIcon(scaler));
+
+            //folderButton.setIcon(new ImageIcon(scaler));
 
             folderButton.addMouseListener(new MouseAdapter() {
                 @Override
