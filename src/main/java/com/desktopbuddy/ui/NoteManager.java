@@ -3,7 +3,9 @@ package com.desktopbuddy.ui;
 import com.desktopbuddy.data.*;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,10 +56,26 @@ public class NoteManager {
         //tree renderer
         initializeTreeRenderer();
 
+        tree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+                    if (path == null) return;
+
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    Object obj = node.getUserObject();
+
+                    if (obj instanceof Note note) {
+                        new NoteEditor(note);
+                    }
+                }
+            }
+        });
+
         //add content to manager window
         window.add(toolbar, BorderLayout.NORTH);
 
-        Folder dir = new Folder(rootDir.getFolderName(), rootDir.getFolderPath());
         window.add(new JScrollPane(tree), BorderLayout.CENTER);
     }
 
