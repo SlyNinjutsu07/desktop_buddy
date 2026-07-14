@@ -8,7 +8,7 @@ and editing markdown files and folders.
 - [X] Added a sprite icon
 - [X] Adding a note manager window with settings and add buttons
 - [X] Writing/reading settings data to a local json on your device
-- [ ] Viewing folders and notes on the note manager window
+- [X] Viewing folders and notes on the note manager window
 - [ ] Deleting and adding notes and folders
 - [ ] Editing markdown files in a note writer window
 - [ ] Adding bolding, highlighting, italicizing, and additional properties to be viewable within the editor
