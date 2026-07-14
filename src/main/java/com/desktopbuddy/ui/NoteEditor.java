@@ -10,6 +10,10 @@ public class NoteEditor {
         window = new JFrame();
         window.setSize(400,400);
 
+        JTextArea textArea = new JTextArea();
+        textArea.setText(NoteIO.getNoteContent(note));
         window.setVisible(true);
+
+        window.add(new JScrollPane(textArea));
     }
 }

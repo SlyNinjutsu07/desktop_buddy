@@ -70,3 +70,9 @@ with storing the SettingsData object into a json file in a hidden
 im writing this because save() has an extra line that checks if the directory
 still exists, however, that won't always be the case because the directory could
 get deleted mid-program.
+
+#### 7.14.26
+
+Claude just caught me on a mistake. I tried returning an empty string when accessing 
+a Note file's contents failed. If I returned an empty string on failure, the user hits save
+, the note would have been overwritten.
