@@ -76,3 +76,9 @@ get deleted mid-program.
 Claude just caught me on a mistake. I tried returning an empty string when accessing 
 a Note file's contents failed. If I returned an empty string on failure, the user hits save
 , the note would have been overwritten.
+
+#### 7.15.26
+
+Adding a check to see if `getNoteContent()` will return null. The point of doing so
+is to make sure that the autosave (w.i.p) doesn't accidentally save a failed read of
+the note. `saveNoteContent` checks if a string is `null`, not `""`.
