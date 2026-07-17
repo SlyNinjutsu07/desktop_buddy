@@ -82,6 +82,22 @@ public class NoteEditor {
 
                 doc.setCharacterAttributes(0, doc.getLength(), sets.get(0), true);
 
+                // Match Headers: # text
+                Matcher headerMatcher = Pattern.compile("(?m)^(#{1,6})\\s+(.*)$").matcher(text);
+                while (headerMatcher.find()) {
+                    int start = headerMatcher.start();
+                    int length = headerMatcher.end() - start;
+                    int level = headerMatcher.group(1).length(); // Number of '#' signs
+
+                    // Create a dynamic font size based on header level
+                    SimpleAttributeSet headerStyle = new SimpleAttributeSet();
+                    StyleConstants.setBold(headerStyle, true);
+                    StyleConstants.setFontSize(headerStyle, 24 - (level * 2)); // # is 22pt, ## is 20pt...
+                    StyleConstants.setForeground(headerStyle, Color.GRAY);
+
+                    doc.setCharacterAttributes(start, length, headerStyle, false);
+                }
+
                 // Match Bold: **text**
                 Matcher boldMatcher = Pattern.compile("\\*\\*(.*?)\\*\\*").matcher(text);
                 while (boldMatcher.find()) {
@@ -140,6 +156,8 @@ public class NoteEditor {
 
         SimpleAttributeSet strikeThroughStyle = new SimpleAttributeSet();
         StyleConstants.isStrikeThrough(strikeThroughStyle);
+
+
 
         sets.add(defaultStyle);
         sets.add(boldStyle);
