@@ -33,7 +33,8 @@ public class NoteEditor {
 
         //Add component
         window.add(new JScrollPane(textPane));
-        parseMarkdown(textPane.getStyledDocument());
+        if(note.getNoteName().endsWith(".md"))
+            parseMarkdown(textPane.getStyledDocument());
         initAutoSave(note);
 
         window.setVisible(true);

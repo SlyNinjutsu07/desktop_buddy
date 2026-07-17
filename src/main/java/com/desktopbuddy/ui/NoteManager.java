@@ -84,11 +84,10 @@ public class NoteManager {
         ImageIcon folderIcon = new ImageIcon("src/main/resources/folder-logo.png");
         Image scaledFolderIcon = folderIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
 
-        ImageIcon noteIcon = new ImageIcon("src/main/resources/md-logo.png");
-        Image scaledNoteIcon = noteIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
+        ImageIcon mdIcon = new ImageIcon("src/main/resources/md-logo.png");
+        Image scaledMDIcon = mdIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
 
-
-        renderer.setLeafIcon(new ImageIcon(scaledNoteIcon));
+        renderer.setLeafIcon(new ImageIcon(scaledMDIcon));
         renderer.setOpenIcon(new ImageIcon(scaledFolderIcon));
         renderer.setClosedIcon(new ImageIcon(scaledFolderIcon));
         tree.setCellRenderer(renderer);
