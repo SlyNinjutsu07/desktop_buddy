@@ -17,7 +17,6 @@ public class TreeManager {
                     if(itemName.equals(".obsidian")) return;
                     head.add(buildTree(new Folder(itemName, itemPath)));
                 } else if(itemName.endsWith(".md") || itemName.endsWith(".txt") ){
-
                     head.add(new DefaultMutableTreeNode(new Note(itemName, itemPath), false));
                 }
             });

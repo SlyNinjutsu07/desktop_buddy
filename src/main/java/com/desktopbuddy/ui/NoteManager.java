@@ -5,10 +5,12 @@ import com.desktopbuddy.data.*;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.nio.file.*;
 
 public class NoteManager {
@@ -24,13 +26,15 @@ public class NoteManager {
 
     //TREE
     private JTree tree;
+    private DefaultMutableTreeNode rootNode;
 
     public NoteManager(){
         this.settingsData = ConfigManager.load(); //load pre-existing settings or create new json
         Path dirPath = Path.of(settingsData.getDirectoryPath());
         rootDir = new Folder(dirPath.getFileName().toString(), dirPath);
 
-        tree = new JTree(TreeManager.buildTree(rootDir));
+        rootNode = TreeManager.buildTree(rootDir);
+        tree = new JTree(rootNode);
 
 
         window = new JFrame("📝notes");
@@ -109,6 +113,37 @@ public class NoteManager {
 
         addFolder.addActionListener(e -> {
             //TODO: Add functionality for adding a folder
+            String folderName = JOptionPane.showInputDialog(window, "Folder name: ");
+            if(folderName == null || folderName.isBlank()) return;
+
+            Path newFolderPath = null;
+            Folder newFolder = null;
+            DefaultMutableTreeNode folderNode = null;
+
+            //check to see if you selected a subfolder of the main dir
+            Object selectedNode = tree.getLastSelectedPathComponent();
+            if(selectedNode == null){
+                newFolderPath = rootDir.getFolderPath().resolve(folderName);
+                newFolder = new Folder(folderName, newFolderPath);
+                folderNode = new DefaultMutableTreeNode(newFolder, true);
+
+                DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                model.insertNodeInto(folderNode, rootNode, rootNode.getChildCount());
+
+            } else if (selectedNode instanceof DefaultMutableTreeNode node){
+                if (node.getUserObject() instanceof Folder folder) {
+                    newFolderPath = folder.getFolderPath().resolve(folderName);
+                    newFolder = new Folder(folderName, newFolderPath);
+                    folderNode = new DefaultMutableTreeNode(newFolder, true);
+
+                    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                    model.insertNodeInto(folderNode, node, node.getChildCount());
+                }
+            }
+
+
+
+
         });
         addNote.addActionListener(e -> {
             //TODO: Add functionality for adding a note
