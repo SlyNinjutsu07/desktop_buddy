@@ -82,3 +82,9 @@ a Note file's contents failed. If I returned an empty string on failure, the use
 Adding a check to see if `getNoteContent()` will return null. The point of doing so
 is to make sure that the autosave (w.i.p) doesn't accidentally save a failed read of
 the note. `saveNoteContent` checks if a string is `null`, not `""`.
+
+#### 7.18.26
+
+Claude caught an edge case where the naming of a directory or file could cause the item being put somewhere
+else. For example, you could name a directory or file with "../" in the beginning, and it would exist that root
+folder and put the directory or file outside of it. I have to add a check for it.

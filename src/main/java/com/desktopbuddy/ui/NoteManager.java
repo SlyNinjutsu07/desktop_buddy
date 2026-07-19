@@ -83,6 +83,7 @@ public class NoteManager {
 
     private void initializeTreeRenderer(){
         DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+        ((DefaultTreeModel) tree.getModel()).setAsksAllowsChildren(true);
 
         //get icons
         ImageIcon folderIcon = new ImageIcon("src/main/resources/folder-logo.png");
@@ -111,8 +112,87 @@ public class NoteManager {
         addButtonMenu.add(addFolder);
         addButtonMenu.add(addNote);
 
+        //Action listeners for add folder and note
+        initAddFolderActionListener(addFolder);
+        initAddNoteActionListener(addNote);
+
+        addButton.addActionListener(e -> {
+            addButtonMenu.show(addButton, addButton.getWidth(), 0);
+        });
+
+        return addButton;
+    }
+
+    private void initAddNoteActionListener(JMenuItem addNote){
+        addNote.addActionListener(e -> {
+            //TODO: Add functionality for adding a note
+            String noteName = JOptionPane.showInputDialog(window, "Note name: ");
+
+            //Check if no name entered
+            if(noteName == null || noteName.isBlank()) return;
+
+            //Check if name is invalid
+            if(noteName.contains("\\") || noteName.contains("/") || noteName.contains("..")){
+                JOptionPane.showMessageDialog(window, "Invalid name");
+                return;
+            }
+
+            //Check if the user did not already enter ".md"
+            if(!noteName.toLowerCase().endsWith(".md")){
+                noteName += ".md";
+            }
+
+            Path newNotePath = null;
+            Note newNote = null;
+            DefaultMutableTreeNode noteNode = null;
+
+            //check to see if you selected a subfolder of the main dir
+            Object selectedNode = tree.getLastSelectedPathComponent();
+            if(selectedNode == null){
+                newNotePath = rootDir.getFolderPath().resolve(noteName);
+                newNote = new Note(noteName, newNotePath);
+                noteNode = new DefaultMutableTreeNode(newNote, false);
+
+                //Attempt to create note
+                try {
+                    Files.createFile(newNotePath);
+                } catch (FileAlreadyExistsException ex){
+                    JOptionPane.showMessageDialog(window, "A note of name \"" + newNote.getNoteName() + "\" already exists");
+                    return; //quit creating the note
+                } catch (IOException ex){
+                    JOptionPane.showMessageDialog(window, "Couldn't create folder");
+                    return;
+                }
+
+                DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                model.insertNodeInto(noteNode, rootNode, rootNode.getChildCount());
+
+            } else if (selectedNode instanceof DefaultMutableTreeNode node) {
+                if (node.getUserObject() instanceof Folder folder) {
+                    newNotePath = folder.getFolderPath().resolve(noteName);
+                    newNote = new Note(noteName, newNotePath);
+                    noteNode = new DefaultMutableTreeNode(newNote, false);
+
+                    //Attempt to create note
+                    try {
+                        Files.createFile(newNotePath);
+                    } catch (FileAlreadyExistsException ex) {
+                        JOptionPane.showMessageDialog(window, "A note of name \"" + newNote.getNoteName() + "\" already exists");
+                        return; //quit creating the note
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(window, "Couldn't create folder");
+                        return;
+                    }
+
+                    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                    model.insertNodeInto(noteNode, node, node.getChildCount());
+                }
+            }
+        });
+    }
+
+    private void initAddFolderActionListener(JMenuItem addFolder){
         addFolder.addActionListener(e -> {
-            //TODO: Add functionality for adding a folder
             String folderName = JOptionPane.showInputDialog(window, "Folder name: ");
             if(folderName == null || folderName.isBlank()) return;
 
@@ -127,6 +207,17 @@ public class NoteManager {
                 newFolder = new Folder(folderName, newFolderPath);
                 folderNode = new DefaultMutableTreeNode(newFolder, true);
 
+                //Attempt to create folder
+                try {
+                    Files.createDirectory(newFolderPath);
+                } catch (FileAlreadyExistsException ex){
+                    JOptionPane.showMessageDialog(window, "A folder of name \"" + newFolder.getFolderName() + "\" already exists");
+                    return; //quit creating the folder
+                } catch (IOException ex){
+                    JOptionPane.showMessageDialog(window, "Couldn't create folder");
+                    return;
+                }
+
                 DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                 model.insertNodeInto(folderNode, rootNode, rootNode.getChildCount());
 
@@ -135,6 +226,17 @@ public class NoteManager {
                     newFolderPath = folder.getFolderPath().resolve(folderName);
                     newFolder = new Folder(folderName, newFolderPath);
                     folderNode = new DefaultMutableTreeNode(newFolder, true);
+
+                    //Attempt to create folder
+                    try {
+                        Files.createDirectory(newFolderPath);
+                    } catch (FileAlreadyExistsException ex){
+                        JOptionPane.showMessageDialog(window, "A folder of name \"" + newFolder.getFolderName() + "\" already exists");
+                        return; //quit creating the folder
+                    } catch (IOException ex){
+                        JOptionPane.showMessageDialog(window, "Couldn't create folder");
+                        return;
+                    }
 
                     DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
                     model.insertNodeInto(folderNode, node, node.getChildCount());
@@ -145,15 +247,6 @@ public class NoteManager {
 
 
         });
-        addNote.addActionListener(e -> {
-            //TODO: Add functionality for adding a note
-        });
-
-        addButton.addActionListener(e -> {
-            addButtonMenu.show(addButton, addButton.getWidth(), 0);
-        });
-
-        return addButton;
     }
 
     private JButton initSettingsButton(){
