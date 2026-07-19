@@ -3,10 +3,7 @@ package com.desktopbuddy.ui;
 import com.desktopbuddy.data.*;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -61,7 +58,8 @@ public class NoteManager {
         tree.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+
+                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
                     TreePath path = tree.getPathForLocation(e.getX(), e.getY());
                     if (path == null) return;
 
@@ -71,6 +69,26 @@ public class NoteManager {
                     if (obj instanceof Note note) {
                         new NoteEditor(note);
                     }
+                } else if(e.getButton() == MouseEvent.BUTTON3){
+                    TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+                    if(path == null) return;
+
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                    Object obj = node.getUserObject(); //check if folder or note
+
+                    JPopupMenu deleteMenu = new JPopupMenu();
+                    JMenuItem delete = new JMenuItem("Delete");
+
+                    delete.addActionListener(d -> {
+                        //check if note
+                        if(obj instanceof Note){
+                            model.removeNodeFromParent(node);
+                        }
+                        //TODO: check if folder (harder)
+                    });
+
+                    deleteMenu.show(tree, e.getX(), e.getY());
                 }
             }
         });
@@ -87,10 +105,10 @@ public class NoteManager {
 
         //get icons
         ImageIcon folderIcon = new ImageIcon("src/main/resources/folder-logo.png");
-        Image scaledFolderIcon = folderIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
+        Image scaledFolderIcon = folderIcon.getImage().getScaledInstance(15,15,Image.SCALE_SMOOTH);
 
-        ImageIcon mdIcon = new ImageIcon("src/main/resources/md-logo.png");
-        Image scaledMDIcon = mdIcon.getImage().getScaledInstance(10,10,Image.SCALE_SMOOTH);
+        ImageIcon mdIcon = new ImageIcon("src/main/resources/doc-logo.png");
+        Image scaledMDIcon = mdIcon.getImage().getScaledInstance(15,15,Image.SCALE_SMOOTH);
 
         renderer.setLeafIcon(new ImageIcon(scaledMDIcon));
         renderer.setOpenIcon(new ImageIcon(scaledFolderIcon));
@@ -125,7 +143,6 @@ public class NoteManager {
 
     private void initAddNoteActionListener(JMenuItem addNote){
         addNote.addActionListener(e -> {
-            //TODO: Add functionality for adding a note
             String noteName = JOptionPane.showInputDialog(window, "Note name: ");
 
             //Check if no name entered
