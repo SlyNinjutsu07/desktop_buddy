@@ -1,6 +1,5 @@
 package com.desktopbuddy;
 
-import com.desktopbuddy.data.*;
 import com.desktopbuddy.ui.*;
 import com.formdev.flatlaf.FlatDarkLaf;
 

@@ -1,6 +1,5 @@
 package com.desktopbuddy.data;
 
-import javax.swing.*;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.AtomicMoveNotSupportedException;
@@ -58,7 +57,6 @@ public class NoteIO {
             Files.deleteIfExists(path);
             return true;
         } catch (IOException e){
-            JOptionPane.showMessageDialog(null, "Could not delete " + path.getFileName());
             e.printStackTrace();
             return false;
         }
