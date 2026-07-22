@@ -35,7 +35,6 @@ public class NoteManager {
 
 
         window = new JFrame("📝notes");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension desktop_size = Toolkit.getDefaultToolkit().getScreenSize();
 

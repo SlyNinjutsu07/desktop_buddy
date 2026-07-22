@@ -14,6 +14,9 @@ public class Sprite {
 
     public Sprite(int width, int height){
         window = new JFrame();
+        window.setUndecorated(true);
+        window.setBackground(new Color(0,0,0,0));
+
         initializeMenu();
         window.setAlwaysOnTop(true);
 
@@ -55,17 +58,22 @@ public class Sprite {
 
         JMenuItem new_window = new JMenuItem("New Window");
         new_window.addActionListener(e -> {
-            System.out.println("Can't do that");
+            JOptionPane.showMessageDialog(null, "Not implemented yet");
         });
 
-        JMenuItem print_text = new JMenuItem("Print Input");
+        JMenuItem print_text = new JMenuItem("Say Something..");
         print_text.addActionListener(e -> {
             String input = JOptionPane.showInputDialog("Enter something...");
-            System.out.println(input);
+            JOptionPane.showMessageDialog(null, "You said: \"" + input + "\"");
         });
+
+        JMenuItem exit = new JMenuItem("Exit");
+        exit.addActionListener(e->System.exit(0));
+
 
         menu.add(notes_window);
         menu.add(new_window);
         menu.add(print_text);
+        menu.add(exit);
     }
 }
