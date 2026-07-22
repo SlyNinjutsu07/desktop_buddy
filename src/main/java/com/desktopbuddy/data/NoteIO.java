@@ -50,4 +50,18 @@ public class NoteIO {
             }
         }
     }
+
+    public static boolean deleteNote(Path path){
+        try{
+            Files.deleteIfExists(path);
+            return true;
+        } catch (IOException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteFolder(Folder folder, Path path){
+
+    }
 }

@@ -79,13 +79,15 @@ public class NoteManager {
 
                     JPopupMenu deleteMenu = new JPopupMenu();
                     JMenuItem delete = new JMenuItem("Delete");
+                    deleteMenu.add(delete);
 
                     delete.addActionListener(d -> {
                         //check if note
-                        if(obj instanceof Note){
+                        if(obj instanceof Note && NoteIO.deleteNote(((Note) obj).getFilePath())){
+                            model.removeNodeFromParent(node);
+                        } else if(obj instanceof Folder){
                             model.removeNodeFromParent(node);
                         }
-                        //TODO: check if folder (harder)
                     });
 
                     deleteMenu.show(tree, e.getX(), e.getY());
