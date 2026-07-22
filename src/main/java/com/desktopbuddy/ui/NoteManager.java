@@ -83,10 +83,16 @@ public class NoteManager {
 
                     delete.addActionListener(d -> {
                         //check if note
-                        if(obj instanceof Note && NoteIO.deleteNote(((Note) obj).getFilePath())){
-                            model.removeNodeFromParent(node);
-                        } else if(obj instanceof Folder){
-                            model.removeNodeFromParent(node);
+                        int i = JOptionPane.showConfirmDialog(window,
+                                "Are you sure you want to delete?", "Confirm delete",
+                                JOptionPane.YES_OPTION);
+                        if(i == JOptionPane.YES_OPTION){
+                            if(obj instanceof Note && NoteIO.deleteNote(((Note) obj).getFilePath())){
+                                model.removeNodeFromParent(node);
+                            } else if(obj instanceof Folder && NoteIO.deleteFolder(((Folder) obj).getFolderPath())){
+                                if(node.isRoot()) return;
+                                model.removeNodeFromParent(node);
+                            }
                         }
                     });
 

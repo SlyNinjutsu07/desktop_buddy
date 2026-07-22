@@ -1,5 +1,7 @@
 package com.desktopbuddy.data;
 
+import javax.swing.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -56,12 +58,26 @@ public class NoteIO {
             Files.deleteIfExists(path);
             return true;
         } catch (IOException e){
+            JOptionPane.showMessageDialog(null, "Could not delete " + path.getFileName());
             e.printStackTrace();
             return false;
         }
     }
 
-    public static boolean deleteFolder(Folder folder, Path path){
+    public static boolean deleteFolder(Path path){
+        // moveToTrash sends the whole folder (contents included) to the OS trash in
+        // ONE call -- recoverable, and no manual recursion needed.
+        if (!Desktop.isDesktopSupported()) return false;
 
+        Desktop desktop = Desktop.getDesktop();
+        if (!desktop.isSupported(Desktop.Action.MOVE_TO_TRASH)) return false;
+
+        try {
+            return desktop.moveToTrash(path.toFile());
+        } catch (IllegalArgumentException | SecurityException e) {
+            // file doesn't exist, or we don't have permission to remove it
+            e.printStackTrace();
+            return false;
+        }
     }
 }
